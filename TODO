@@ -1,0 +1,16 @@
+- Don't poll D-Bus, but implement proper asynchronous receiver
+    Threading in HexChat context seems to be a mess ...
+
+- Implement commands:
+
+    - Enable/Disable
+    - Prefix
+    - Suffix
+    - Help
+    - Custom command to execute on AFK (and getting back)?
+    - Option to use /AWAY and /BACK or not
+
+- Complete README.md
+
+- Release on GitHub?
+
