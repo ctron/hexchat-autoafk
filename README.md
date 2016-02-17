@@ -6,13 +6,26 @@ itself is missing such an essential feature. The plugin is written in Python.
 
 ## FEATURES
 
-- Automatically change your nickname whenever you are AFK
+- Automatically changes your nickname whenever you are AFK
 
 ## INSTALLATION
 
+Clone the repository and place and link to the AutoAFK.py file within your
+hexchat's addon directory:
+
+    cd ~
+    git clone gitolite:users/kbabioch/hexchat-autoafk.git
+    ln -s hexchat-autoafk/AutoAFK.py .config/hexchat/addons/
+
+Don't forget to restart HexChat.
+
 ## USAGE
 
+Run /AUTOAFK HELP to see available commands.
+
 ## DOCUMENTATION
+
+See the inline comments for documentation.
 
 ## CONTRIBUTIONS
 

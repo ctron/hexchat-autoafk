@@ -9,8 +9,29 @@
     - Help
     - Custom command to execute on AFK (and getting back)?
     - Option to use /AWAY and /BACK or not
+    - Ignore special networks / channels
+
+- Implement away time (only visible to yourself)
+
+- Save options for next start of hexchat
 
 - Complete README.md
 
 - Release on GitHub?
+
+- Implement properly as class (OOP) to get rid of global statements
+
+- Wrapper for print function, so output from this addon is prefixed the same ...
+
+- Throw exceptions in subcommand?
+
+- Make function to make string bold, etc.
+
+- Load pluginprefs at startup, output info at startup
+
+- Custom command for afk and back
+
+- Ignore special channels and/or networks
+
+- Back pluginprefs with another class, write back ...
 
