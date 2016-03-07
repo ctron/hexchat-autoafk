@@ -125,7 +125,7 @@ def autoafk_help(word, word_eol, userdata):
     print('    /AUTOAFK HELP                Outputs this usage help');
     print('    /AUTOAFK INFO                Outputs information about current state of addon');
     print('    /AUTOAFK ON|OFF              Turns this addon on or off (default is on)');
-    print('    /AUTOAFK DELAY <seconds>     Waits given amount of seconds before considering for you to be AFK (default is 0)');
+    print('    /AUTOAFK DELAY <seconds>     Waits given amount of seconds before considering you to be AFK (default is 0)');
     print('    /AUTOAFK PREFIX <prefix>     Puts a prefix in front of your nick when being AFK (default is empty)');
     print('    /AUTOAFK SUFFIX <suffix>     Attaches suffix to your nick when being AFK (default is |AFK)');
     print('')
