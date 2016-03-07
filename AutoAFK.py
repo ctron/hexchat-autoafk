@@ -22,7 +22,7 @@ import hexchat
 import re
 
 __module_name__ = 'AutoAFK'
-__module_version__ = '1.0'
+__module_version__ = '0.1'
 __module_author__ = 'Karol Babioch <karol@babioch.de>'
 __module_description__ = 'Automatically change your nickname whenever you leave your computer.' 
 
