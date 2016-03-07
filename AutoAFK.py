@@ -65,44 +65,50 @@ def poll_dbus(userdata):
 
     delay = hexchat.get_pluginpref('autoafk_delay')
 
-    # Query D-Bus interface provided by GNOME
-    bus = dbus.SessionBus()
-    screensaver = bus.get_object('org.gnome.ScreenSaver', '/org/gnome/ScreenSaver')
-    iface = dbus.Interface(screensaver, 'org.gnome.ScreenSaver')
+    try:
 
-    # Check whether screensaver is active and user has not been handled yet
-    if iface.GetActiveTime() > delay and not away:
+        # Query D-Bus interface provided by GNOME
+        bus = dbus.SessionBus()
+        screensaver = bus.get_object('org.gnome.ScreenSaver', '/org/gnome/ScreenSaver')
+        iface = dbus.Interface(screensaver, 'org.gnome.ScreenSaver')
 
-        # Iterate over all networks
-        for network in get_networks():
+        # Check whether screensaver is active and user has not been handled yet
+        if iface.GetActiveTime() > delay and not away:
 
-            nick = hexchat.get_info('nick')
+            # Iterate over all networks
+            for network in get_networks():
 
-            context = hexchat.find_context(server=network)
-            context.command('NICK {0}{1}{2}'.format(hexchat.get_pluginpref('autoafk_prefix'), nick, hexchat.get_pluginpref('autoafk_suffix')))
+                nick = hexchat.get_info('nick')
+
+                context = hexchat.find_context(server=network)
+                context.command('NICK {0}{1}{2}'.format(hexchat.get_pluginpref('autoafk_prefix'), nick, hexchat.get_pluginpref('autoafk_suffix')))
 
 
-        # Set global flags
-        away = True
+            # Set global flags
+            away = True
 
-    elif iface.GetActiveTime() == 0 and away:
+        elif iface.GetActiveTime() == 0 and away:
 
-        # Iterate over all networks
-        for network in get_networks():
+            # Iterate over all networks
+            for network in get_networks():
 
-            nick = hexchat.get_info('nick')
+                nick = hexchat.get_info('nick')
 
-            prefix = re.escape(hexchat.get_pluginpref('autoafk_prefix'))
-            suffix = re.escape(hexchat.get_pluginpref('autoafk_suffix'))
+                prefix = re.escape(hexchat.get_pluginpref('autoafk_prefix'))
+                suffix = re.escape(hexchat.get_pluginpref('autoafk_suffix'))
 
-            # Restore original nick using regular expressions
-            nick = re.sub(r'(' + prefix + ')(?P<nick>.*)(' + suffix + ')', '\g<nick>', nick)
+                # Restore original nick using regular expressions
+                nick = re.sub(r'(' + prefix + ')(?P<nick>.*)(' + suffix + ')', '\g<nick>', nick)
 
-            context = hexchat.find_context(server=network)
-            context.command('NICK {0}'.format(nick))
+                context = hexchat.find_context(server=network)
+                context.command('NICK {0}'.format(nick))
 
-        # Mark user as back
-        away = False
+            # Mark user as back
+            away = False
+
+    except DBusException as e:
+
+        print('AutoAFK: DBus exception: '.format(e))
 
     # Return 1 to keep timer in hexchat scheduler
     return 1
