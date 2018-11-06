@@ -22,8 +22,8 @@ import hexchat
 import re
 
 __module_name__ = 'AutoAFK'
-__module_version__ = '0.1'
-__module_author__ = 'Karol Babioch <karol@babioch.de>'
+__module_version__ = '0.2'
+__module_author__ = 'Karol Babioch <karol@babioch.de>, Jens Reimann <jreimann@redhat.com>'
 __module_description__ = 'Automatically change your nickname whenever you leave your computer.' 
 
 def get_networks():
@@ -45,6 +45,26 @@ def get_networks():
 
     return networks
 
+def get_screensaver():
+    """Try different addresses for getting a screensaver instance"""
+    # Query D-Bus interface provided by GNOME
+    bus = dbus.SessionBus()
+
+    try:
+        screensaver = bus.get_object('org.gnome.ScreenSaver', '/org/gnome/ScreenSaver')
+        if screensaver:
+            return dbus.Interface(screensaver, 'org.gnome.ScreenSaver')
+    except:
+        pass
+
+    try:
+        screensaver = bus.get_object('org.cinnamon.ScreenSaver', '/org/cinnamon/ScreenSaver')
+        if screensaver:
+            return dbus.Interface(screensaver, 'org.cinnamon.ScreenSaver')
+    except:
+        pass
+
+    return None
 
 # Global flags used by poll_dbus
 # TODO Replace by proper OOP design (class)
@@ -67,13 +87,10 @@ def poll_dbus(userdata):
 
     try:
 
-        # Query D-Bus interface provided by GNOME
-        bus = dbus.SessionBus()
-        screensaver = bus.get_object('org.gnome.ScreenSaver', '/org/gnome/ScreenSaver')
-        iface = dbus.Interface(screensaver, 'org.gnome.ScreenSaver')
+        iface = get_screensaver()
 
         # Check whether screensaver is active and user has not been handled yet
-        if iface.GetActiveTime() > delay and not away:
+        if iface and iface.GetActiveTime() > delay and not away:
 
             # Iterate over all networks
             for network in get_networks():
@@ -87,7 +104,7 @@ def poll_dbus(userdata):
             # Set global flags
             away = True
 
-        elif iface.GetActiveTime() == 0 and away:
+        elif iface and iface.GetActiveTime() == 0 and away:
 
             # Iterate over all networks
             for network in get_networks():
@@ -106,9 +123,9 @@ def poll_dbus(userdata):
             # Mark user as back
             away = False
 
-    except DBusException as e:
+    except dbus.DBusException as e:
 
-        print('AutoAFK: DBus exception: '.format(e))
+        print('AutoAFK: DBus exception: {}'.format(e))
 
     # Return 1 to keep timer in hexchat scheduler
     return 1
