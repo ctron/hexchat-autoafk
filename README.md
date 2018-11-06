@@ -14,14 +14,14 @@ Clone the repository and place and link to the AutoAFK.py file within your
 hexchat's addon directory:
 
     cd ~
-    git clone gitolite:users/kbabioch/hexchat-autoafk.git
+    git clone https://github.com/ctron/hexchat-autoafk.git
     ln -s hexchat-autoafk/AutoAFK.py .config/hexchat/addons/
 
 Don't forget to restart HexChat.
 
 ## USAGE
 
-Run /AUTOAFK HELP to see available commands.
+Run `/AUTOAFK HELP` to see available commands.
 
 ## DOCUMENTATION
 
